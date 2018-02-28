@@ -19,7 +19,7 @@ UserSchema.pre('save', function(next){
       console.log(err);
       return
     }
-    this.password = data;
+    this.password = data
     next()
   })
 })
