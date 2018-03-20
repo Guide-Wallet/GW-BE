@@ -1,21 +1,20 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const Schema = mongoose.Schema;
+const ObjectId = Schema.Types.ObjectId;
 
-const UserSchema = new Schema({
+const OrganizationSchema = new Schema({
   username: {type: String, required: true, unique: true},
   password: {type: String, required: true},
   email: {type: String, required: true},
-  firstName: String,
-  lastName: String,
+  orgName: {type: String, required: true},
   phone: Number,
   dateJoined: {type: Date, default: Date.now},
-  certifications: Array,
-  photoUrl: String,
-  isAdmin: {type: Boolean, default: false},
+  logoUrl: String,
+  certifications: [{type: ObjectId}]
 })
 
-UserSchema.pre('save', function(next){
+OrganizationSchema.pre('save', function(next){
   bcrypt.hash(this.password, 10, (err, data) => {
     if(err){
       console.log(err);
@@ -26,8 +25,8 @@ UserSchema.pre('save', function(next){
   })
 })
 
-UserSchema.methods.comparePass = function(password, cb){
+OrganizationSchema.methods.comparePass = function(password, cb){
   bcrypt.compare(password, this.password, cb);
 }
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('Organization', OrganizationSchema);
