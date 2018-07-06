@@ -3,15 +3,19 @@ const bcrypt = require('bcrypt');
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
-  username: {type: String, required: true, unique: true},
-  password: {type: String, required: true},
-  email: {type: String, required: true},
+  username: { type: String, unique: true },
+  password: { type: String },
+  email: { type: String, required: true, unique: true },
   firstName: String,
   lastName: String,
   phone: Number,
+  occupation: String,
+  location: String,
+  description: String,
+  isRegistered: { type: Boolean, default: true },
   dateJoined: {type: Date, default: Date.now},
-  certifications: Array,
-  photoUrl: String,
+  imageUrl: String,
+  coverImageUrl: String,
   isAdmin: {type: Boolean, default: false},
 })
 
@@ -19,10 +23,10 @@ UserSchema.pre('save', function(next){
   bcrypt.hash(this.password, 10, (err, data) => {
     if(err){
       console.log(err);
-      return
+      return next(err);
     }
     this.password = data;
-    next()
+    return next()
   })
 })
 

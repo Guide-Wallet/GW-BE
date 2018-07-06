@@ -3,18 +3,15 @@ const Schema = mongoose.Schema
 const ObjectId = Schema.Types.ObjectId
 
 const CertificationSchema = new Schema({
-  name: { type: String, required: true},
-  description: { type: String, required: true},
-  organizationId: { type: ObjectId, ref: 'Organization' },
-  userId: { type: ObjectId, ref: 'User' },
+  organizationId: { type: ObjectId, ref: 'Organization', required: true },
+  instructor: String,
+  courseId: { type: ObjectId, ref: 'Course', required: true },
+  userId: { type: ObjectId, ref: 'User', required: true },
   expires: Date,
-  isRevoked: Boolean,
-  isRemoved: Boolean
+  isRevoked: { type: Boolean, default: false },
+  isRemoved: { type: Boolean, default: false }
+}, {
+  timestamps: true
 })
-
-// CertificationSchema.post('find', (err, data) => {
-//   data.populate({organizationId})
-//   next();
-// })
 
 module.exports = mongoose.model('Certification', CertificationSchema)

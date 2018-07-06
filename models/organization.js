@@ -4,14 +4,16 @@ const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
 const OrganizationSchema = new Schema({
-  username: {type: String, required: true, unique: true},
   password: {type: String, required: true},
   email: {type: String, required: true},
   orgName: {type: String, required: true},
   phone: Number,
   dateJoined: {type: Date, default: Date.now},
-  logoUrl: String,
-  certifications: [{type: ObjectId}]
+  location: String,
+  description: String,
+  imageUrl: String,
+  coverImageUrl: String,
+  courses: [{type: ObjectId, ref: 'Course'}]
 })
 
 OrganizationSchema.pre('save', function(next){
